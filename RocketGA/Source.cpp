@@ -14,7 +14,7 @@ GA<char>* geneticAlgorithm;
 
 int main()
 {
-	srand(time(NULL));
+	srand(time_t(NULL));
 	geneticAlgorithm = new GA<char>(10, targetString.length(), getRandomGene, fitness, 0.01f);
 	//geneticAlgorithm->NewGeneration();
 	for (auto i = geneticAlgorithm->Population.begin(); i != geneticAlgorithm->Population.end(); i++)
