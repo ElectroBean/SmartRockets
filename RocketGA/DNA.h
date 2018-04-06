@@ -13,23 +13,25 @@ public:
 	std::list<T> Genes;
 	float fitness;
 
-	DNA(int size, std::function<T()> getRandomGene, std::function<float(int)> fitnessFunction)
+	DNA(int size, std::function<T()> getRandomGene, std::function<float(int)> fitnessFunction, bool shouldInitGenes = true)
 	{
 		Genes = std::list<T>(size);
 		this->getRandomGene = getRandomGene;
 		this->fitnessFunction = fitnessFunction;
-		//initialize random seed
-		srand(time_t(NULL));
 
 		//for (int i = 0; i < Genes.size(); i++)
 		//{
 		//	//set random genes of gene array
 		//	Genes[i] = this->getRandomGene();
 		//}
-		
-		for (auto iter = Genes.begin(); iter != Genes.end(); iter++)
+
+		if (shouldInitGenes)
 		{
-			*iter = this->getRandomGene();
+			for (auto iter = Genes.begin(); iter != Genes.end(); iter++)
+			{
+				*iter = this->getRandomGene();
+			}
+
 		}
 	}
 
@@ -40,13 +42,13 @@ public:
 
 	float CalculateFitness(int index)
 	{
-		fitness = fitnessFunction(index);
-		return fitness;
+		this->fitness = fitnessFunction(index);
+		return this->fitness;
 	}
 
 	DNA<T> Crossover(DNA<T> otherParent)
 	{
-		DNA<T> child = DNA<T>(Genes.size(), getRandomGene, fitnessFunction);
+		DNA<T> child = DNA<T>(Genes.size(), getRandomGene, fitnessFunction, false);
 
 		//for (int i = 0; i < Genes.size(); i++)
 		//{
@@ -55,12 +57,10 @@ public:
 		//	child.Genes[i] = randomNumber < 0.5f ? Genes[i] : otherParent.Genes[i];
 		//}
 
-
-
 		//setting gene to single parents gene
 		//results in repeating genes on all occasions
 		//need to implement proper crossover
-		for (auto iter = child.Genes.begin(); iter != child.Genes.end(); iter++)
+		for (auto iter = child.Genes.begin(); iter != child.Genes.end(); iter ++)
 		{
 			//for (auto iter2 = Genes.begin(); iter2 != Genes.end(); iter2++)
 			//{
@@ -115,7 +115,7 @@ public:
 private:
 
 	std::function<T()> getRandomGene;
-	std::function<int(float)> fitnessFunction;
+	std::function<float(int)> fitnessFunction;
 
 };
 
