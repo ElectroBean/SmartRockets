@@ -2,6 +2,7 @@
 
 #include "Application.h"
 #include "Renderer2D.h"
+#include <GeneticAlgorithm.h>
 
 class Application2D : public aie::Application {
 public:
@@ -14,9 +15,15 @@ public:
 
 	virtual void update(float deltaTime);
 	virtual void draw();
+	GeneticAlgorithm<char>* m_GA;
+	std::string* targetString;
+	std::string* validChars;
 
 protected:
 
+
+	char getRandomGene();
+	float fitness(int index);
 	aie::Renderer2D*	m_2dRenderer;
 	aie::Texture*		m_texture;
 	aie::Texture*		m_shipTexture;

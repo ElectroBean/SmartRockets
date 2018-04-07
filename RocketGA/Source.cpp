@@ -9,8 +9,8 @@ char getRandomGene();
 float fitness(int index);
 int randomgen(int max, int min);
 
-std::string targetString = "If Jesus could walk on water, could he swim on land?";
-std::string validChars = "abcdefghijklmnopqrstuvwxyz .,?ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+std::string targetString = "if jesus could walk on water, could he swim on land?";
+std::string validChars = "abcdefghijklmnopqrstuvwxyz .,?";
 
 GA<char>* geneticAlgorithm;
 
@@ -21,7 +21,7 @@ bool hasntReached = true;
 int main()
 {
 	srand(time(0));
-	geneticAlgorithm = new GA<char>(10, targetString.length(), getRandomGene, fitness, 4.0f);
+	geneticAlgorithm = new GA<char>(10, targetString.length(), getRandomGene, fitness, 2.5f);
 	//geneticAlgorithm->NewGeneration();
 	//for (auto i = geneticAlgorithm->Population.begin(); i != geneticAlgorithm->Population.end(); i++)
 	//{

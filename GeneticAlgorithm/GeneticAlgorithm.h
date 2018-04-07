@@ -7,7 +7,7 @@
 #include <time.h>
 
 template<typename T>
-class GA
+class GeneticAlgorithm
 {
 public:
 
@@ -19,7 +19,7 @@ public:
 	std::list<T> bestGenes;
 	float bestFitness;
 
-	GA(int populationSize,
+	GeneticAlgorithm(int populationSize,
 		int dnaSize,
 		std::function<T()> getRandomGene,
 		std::function<float(int)>  fitnessFunction,
@@ -125,7 +125,7 @@ public:
 			//sort population by fitness
 			Population.sort([](DNA<T>  lhs, DNA<T>  rhs) {return lhs.fitness > rhs.fitness; });
 			//get random number equal to 25% of size of population
-			int randomN = Population.size() * 0.5f;
+			int randomN = Population.size() * 0.25f;
 			//choose a random iterator number from 0 to the random number we just got
 			int randPlace = rand() % randomN + 0;
 			//set iterator to begin of population
@@ -166,25 +166,3 @@ private:
 	std::function<float(int)>  fitnessFunction;
 
 };
-
-//while (hasntReached)
-//{
-//	geneticAlgorithm->NewGeneration();
-//	for (auto i = geneticAlgorithm->Population.begin(); i != geneticAlgorithm->Population.end(); i++)
-//	{
-//		auto temp = *i;
-//		auto temp2 = temp.Genes;
-//		for (auto iter = temp2.begin(); iter != temp2.end(); iter++)
-//		{
-//			std::cout << *iter;
-//		}
-//
-//		if ((*i).fitness == 6)
-//		{
-//			hasntReached = false;
-//		}
-//		std::cout << "\n";
-//	}
-//
-//	std::cout << "\n New Generation \n";
-//}
