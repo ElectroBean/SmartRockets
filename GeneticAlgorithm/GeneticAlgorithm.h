@@ -12,12 +12,14 @@ class GeneticAlgorithm
 public:
 
 	std::list<DNA<T>> Population;
+	std::list<DNA<T>> newPopulation;
 	int generationNumber;
 	float mutationRate;
 	float sumFitness;
 
 	std::list<T> bestGenes;
 	float bestFitness;
+
 
 	GeneticAlgorithm(int populationSize,
 		int dnaSize,
@@ -31,6 +33,7 @@ public:
 		generationNumber = 1;
 		this->mutationRate = mutationRate;
 		Population = std::list<DNA<T>>();
+		newPopulation = std::list<DNA<T>>();
 
 		for (int i = 0; i < populationSize; i++)
 		{
@@ -51,7 +54,7 @@ public:
 		CalculateFitness();
 
 		//initialize new population
-		std::list<DNA<T>> newPopulation = std::list<DNA<T>>();
+		newPopulation.clear();
 
 		//problem is in here somewhere, not anymore lmao
 		for (int i = 0; i < Population.size(); i++)
@@ -68,7 +71,9 @@ public:
 			newPopulation.push_back(child);
 		}
 
+		std::list<DNA<T>> tempList = Population;
 		Population = newPopulation;
+		newPopulation = tempList;
 	}
 
 	void CalculateFitness()
@@ -122,10 +127,12 @@ public:
 		//50% elitist 50% higher fitness has higher chance to be chosen as parent
 		if (randChoice < 50)
 		{
-			//sort population by fitness
+			////sort population by fitness
 			Population.sort([](DNA<T>  lhs, DNA<T>  rhs) {return lhs.fitness > rhs.fitness; });
 			//get random number equal to 25% of size of population
 			int randomN = Population.size() * 0.25f;
+			if (randomN == 0)
+				randomN = 1;
 			//choose a random iterator number from 0 to the random number we just got
 			int randPlace = rand() % randomN + 0;
 			//set iterator to begin of population
@@ -134,11 +141,8 @@ public:
 			std::advance(iter, randPlace);
 			//return DNA at iterator position
 			return *iter;
-		}
-		else
-		{
 
-			////for each member in the population
+			//this gives an error after some time
 			//for (auto iter = Population.begin(); iter != Population.end(); iter++)
 			//{
 			//	//set temp variable to current iterator
@@ -152,10 +156,14 @@ public:
 			//
 			//	//take temp fitness from our random number
 			//	randomNumber -= temp.fitness;
+			//	//}
 			//}
-			DNA<T> newDNA = DNA<T>(dnaSize, getRandomGene, fitnessFunction, false);
-			newDNA.Genes = bestGenes;
-			return newDNA;
+		}
+		else
+		{
+			DNA<T> childDNA = DNA<T>(dnaSize, getRandomGene, fitnessFunction);
+			childDNA.Genes = bestGenes;
+			return childDNA;
 		}
 
 	}
