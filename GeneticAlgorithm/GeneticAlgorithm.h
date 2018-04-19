@@ -43,8 +43,18 @@ public:
 
 	~GeneticAlgorithm()
 	{
-		delete Population; 
-		delete newPopulation;
+		for (auto iter = Population.begin(); iter != Population.end(); iter++)
+		{
+			delete *iter;
+		}
+		//if (newPopulation.size() != 0)
+		//{
+		//	for (auto iter = newPopulation.begin(); iter != newPopulation.end(); iter++)
+		//	{
+		//		delete *iter;
+		//	}
+		//
+		//}
 	}
 
 	//create new generation of whatevers
@@ -78,7 +88,16 @@ public:
 			newPopulation.push_back(child);
 		}
 
+
 		std::list<DNA<T>*> tempList = Population;
+
+		//delete pointers in old population
+		for (auto iter = Population.begin(); iter != Population.end(); iter++)
+		{
+			delete *iter;
+		}
+
+		//set new population
 		Population = newPopulation;
 		newPopulation = tempList;
 	}
@@ -100,16 +119,17 @@ public:
 
 		for (auto iter = Population.begin(); iter != Population.end(); iter++)
 		{
-			DNA<T>* temp = *iter;
+			DNA<T> temp = **iter;
 			int index = std::distance(Population.begin(), iter);
 			sumFitness += (**iter).CalculateFitness(index);
 
 			if ((**iter).fitness > bestFitness)
 			{
 				bestFitness = (**iter).fitness;
-				bestGenes = temp->Genes;
+				bestGenes = temp.Genes;
 			}
 			//sumFitness += *iter.CalculateFitness(iter);
+		//delete temp;
 		}
 
 		//bestFitness = best.fitness;
@@ -132,7 +152,7 @@ public:
 
 		float randChoice = rand() % 100 + 1;
 		//50% elitist 50% higher fitness has higher chance to be chosen as parent
-		if (randChoice < 50)
+		if (randChoice <= 100)
 		{
 			////sort population by fitness
 			Population.sort([](DNA<T>*  lhs, DNA<T>*  rhs) {return lhs->fitness > rhs->fitness; });
@@ -148,7 +168,7 @@ public:
 			std::advance(iter, randPlace);
 			//return DNA at iterator position
 			return (*iter);
-		
+
 			//this gives an error after some time
 			//for (auto iter = Population.begin(); iter != Population.end(); iter++)
 			//{
@@ -166,12 +186,12 @@ public:
 			//	//}
 			//}
 		}
-		else
-		{
-			DNA<T>* childDNA = new DNA<T>(dnaSize, getRandomGene, fitnessFunction);
-			childDNA->Genes = bestGenes;
-			return childDNA;
-		}
+		//else
+		//{
+		//	DNA<T>* childDNA = new DNA<T>(dnaSize, getRandomGene, fitnessFunction);
+		//	childDNA->Genes = bestGenes;
+		//	return childDNA;
+		//}
 
 	}
 

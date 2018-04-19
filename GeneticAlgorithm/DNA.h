@@ -41,7 +41,7 @@ public:
 
 	~DNA()
 	{
-
+	
 	}
 
 	float CalculateFitness(int index)
@@ -52,14 +52,9 @@ public:
 
 	DNA<T>* Crossover(DNA<T>* otherParent)
 	{
-		child = new DNA<T>(Genes.size(), getRandomGene, fitnessFunction, false);
-
-		//for (int i = 0; i < Genes.size(); i++)
-		//{
-		//	//do random setting of genes
-		//	float randomNumber = rand() % 1 + 0;
-		//	child.Genes[i] = randomNumber < 0.5f ? Genes[i] : otherParent.Genes[i];
-		//}
+		//child = new DNA<T>(Genes.size(), getRandomGene, fitnessFunction, false);
+		DNA<T>* child = new DNA<T>(Genes.size(), getRandomGene, fitnessFunction, false);
+	
 
 		//setting gene to single parents gene
 		//results in repeating genes on all occasions
@@ -120,5 +115,5 @@ private:
 
 	std::function<T()> getRandomGene;
 	std::function<float(int)> fitnessFunction;
-	DNA<T>* child;
+	
 };

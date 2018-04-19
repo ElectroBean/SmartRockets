@@ -1,4 +1,5 @@
 #include "Application2D.h"
+#include "vld.h"
 
 int main() {
 	

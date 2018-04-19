@@ -21,7 +21,7 @@ bool Application2D::startup() {
 	std::function<float(int)> t = std::bind(&Application2D::fitness, this, std::placeholders::_1);
 
 	validChars = new std::string("abcdefghijklmnopqrstuvwxyz,.? ABCDEFGHIJKLMNOPQRSTUVWXYZ");
-	targetString = new std::string("According to all known laws of aviation, there is no way a bee should be able to fly. It's wings are too small to get its fat little body off the ground.");
+	targetString = new std::string("pineapple");
 
 	srand(time(NULL));
 
@@ -29,10 +29,10 @@ bool Application2D::startup() {
 	//initialize genetic algorithm of type char
 	//have 10 members in each population
 	//gene size of population will be the size of the target string
-	//then setting fitness randomgene functions
+	//then setting fitness/random gene functions
 	//mutation rate of 5%
 	////////////////////////////////////////////////////////////////
-	m_GA = new GeneticAlgorithm<char>(18, targetString->length(), f, t, 5.0f);
+	m_GA = new GeneticAlgorithm<char>(10, targetString->length(), f, t, 5.0f);
 
 	m_font = new aie::Font("./font/consolas.ttf", 32);
 
@@ -45,7 +45,11 @@ bool Application2D::startup() {
 
 void Application2D::shutdown() {
 
+	delete m_GA;
 	delete m_font;
+	delete validChars;
+	delete targetString;
+	delete m_2dRenderer;
 }
 
 void Application2D::update(float deltaTime) {
