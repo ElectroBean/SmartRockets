@@ -21,7 +21,7 @@ bool Application2D::startup() {
 	std::function<float(int)> t = std::bind(&Application2D::fitness, this, std::placeholders::_1);
 
 	validChars = new std::string("abcdefghijklmnopqrstuvwxyz,.? ABCDEFGHIJKLMNOPQRSTUVWXYZ");
-	targetString = new std::string("If Jesus could walk on water, could he swim on land?");
+	targetString = new std::string("According to all known laws of aviation, there is no way a bee should be able to fly. It's wings are too small to get its fat little body off the ground.");
 
 	srand(time(NULL));
 
@@ -32,7 +32,7 @@ bool Application2D::startup() {
 	//then setting fitness randomgene functions
 	//mutation rate of 5%
 	////////////////////////////////////////////////////////////////
-	m_GA = new GeneticAlgorithm<char>(100, targetString->length(), f, t, 5.0f);
+	m_GA = new GeneticAlgorithm<char>(18, targetString->length(), f, t, 5.0f);
 
 	m_font = new aie::Font("./font/consolas.ttf", 32);
 
@@ -101,7 +101,7 @@ void Application2D::draw() {
 		std::string c;
 		auto iter = m_GA->Population.begin();
 		std::advance(iter, i);
-		for (auto elIter = iter->Genes.begin(); elIter != iter->Genes.end(); elIter++)
+		for (auto elIter = (*iter)->Genes.begin(); elIter != (*iter)->Genes.end(); elIter++)
 		{
 			c += *elIter;
 		}
@@ -129,7 +129,7 @@ float Application2D::fitness(int index)
 	float score = 0;
 	auto it = m_GA->Population.begin();
 	std::advance(it, index);
-	DNA<char> dna = *it;
+	DNA<char> dna = **it;
 
 	for (int i = 0; i < dna.Genes.size(); i++)
 	{

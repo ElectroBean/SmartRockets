@@ -32,6 +32,10 @@ public:
 				*iter = this->getRandomGene();
 			}
 
+			//for (int i = 0; i < size; i++)
+			//{
+			//	Genes.push_back((this->getRandomGene()));
+			//}
 		}
 	}
 
@@ -46,9 +50,9 @@ public:
 		return this->fitness;
 	}
 
-	DNA<T> Crossover(DNA<T> otherParent)
+	DNA<T>* Crossover(DNA<T>* otherParent)
 	{
-		DNA<T> child = DNA<T>(Genes.size(), getRandomGene, fitnessFunction, false);
+		child = new DNA<T>(Genes.size(), getRandomGene, fitnessFunction, false);
 
 		//for (int i = 0; i < Genes.size(); i++)
 		//{
@@ -60,17 +64,17 @@ public:
 		//setting gene to single parents gene
 		//results in repeating genes on all occasions
 		//need to implement proper crossover
-		for (auto iter = child.Genes.begin(); iter != child.Genes.end(); iter++)
+		for (auto iter = child->Genes.begin(); iter != child->Genes.end(); iter++)
 		{
 			//for (auto iter2 = Genes.begin(); iter2 != Genes.end(); iter2++)
 			//{
 			//	*iter = *iter2;
 			//	break;
 			//}
-			int difference = std::distance(child.Genes.begin(), iter);
+			int difference = std::distance(child->Genes.begin(), iter);
 			auto parent1Iter = Genes.begin();
 			std::advance(parent1Iter, difference);
-			auto parent2Iter = otherParent.Genes.begin();
+			auto parent2Iter = otherParent->Genes.begin();
 			std::advance(parent2Iter, difference);
 
 			//random float between 0 and 1 hopefully
@@ -116,5 +120,5 @@ private:
 
 	std::function<T()> getRandomGene;
 	std::function<float(int)> fitnessFunction;
-
+	DNA<T>* child;
 };

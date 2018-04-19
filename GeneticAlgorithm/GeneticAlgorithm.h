@@ -11,8 +11,8 @@ class GeneticAlgorithm
 {
 public:
 
-	std::list<DNA<T>> Population;
-	std::list<DNA<T>> newPopulation;
+	std::list<DNA<T>*> Population;
+	std::list<DNA<T>*> newPopulation;
 	int generationNumber;
 	float mutationRate;
 	float sumFitness;
@@ -32,13 +32,19 @@ public:
 		this->fitnessFunction = fitnessFunction;
 		generationNumber = 1;
 		this->mutationRate = mutationRate;
-		Population = std::list<DNA<T>>();
-		newPopulation = std::list<DNA<T>>();
+		Population = std::list<DNA<T>*>();
+		newPopulation = std::list<DNA<T>*>();
 
 		for (int i = 0; i < populationSize; i++)
 		{
-			Population.push_back(DNA<T>(dnaSize, getRandomGene, fitnessFunction));
+			Population.push_back(new DNA<T>(dnaSize, getRandomGene, fitnessFunction));
 		}
+	}
+
+	~GeneticAlgorithm()
+	{
+		delete Population; 
+		delete newPopulation;
 	}
 
 	//create new generation of whatevers
@@ -60,18 +66,19 @@ public:
 		for (int i = 0; i < Population.size(); i++)
 		{
 			//problem not in chooseparent or not
-			DNA<T> parent1 = ChooseParent();
-			DNA<T> parent2 = ChooseParent();
+			DNA<T>* parent1 = ChooseParent();
+			DNA<T>* parent2 = ChooseParent();
 
 
 			//problem might be in crossover, defs not
-			DNA<T> child = parent1.Crossover(parent2);
-			child.Mutate(mutationRate);
+			DNA<T>* child = parent1->Crossover(parent2);
+			child->Mutate(mutationRate);
 
+			//*newPopulation->push_back(child);
 			newPopulation.push_back(child);
 		}
 
-		std::list<DNA<T>> tempList = Population;
+		std::list<DNA<T>*> tempList = Population;
 		Population = newPopulation;
 		newPopulation = tempList;
 	}
@@ -93,14 +100,14 @@ public:
 
 		for (auto iter = Population.begin(); iter != Population.end(); iter++)
 		{
-			DNA<T> temp = *iter;
+			DNA<T>* temp = *iter;
 			int index = std::distance(Population.begin(), iter);
-			sumFitness += (*iter).CalculateFitness(index);
+			sumFitness += (**iter).CalculateFitness(index);
 
-			if ((*iter).fitness > bestFitness)
+			if ((**iter).fitness > bestFitness)
 			{
-				bestFitness = (*iter).fitness;
-				bestGenes = temp.Genes;
+				bestFitness = (**iter).fitness;
+				bestGenes = temp->Genes;
 			}
 			//sumFitness += *iter.CalculateFitness(iter);
 		}
@@ -109,7 +116,7 @@ public:
 		//bestGenes = best.Genes;
 	}
 
-	DNA<T> ChooseParent()
+	DNA<T>* ChooseParent()
 	{
 		float randomNumber = (static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) * sumFitness;
 		//for (int i = 0; i < Population.size(); i++)
@@ -128,7 +135,7 @@ public:
 		if (randChoice < 50)
 		{
 			////sort population by fitness
-			Population.sort([](DNA<T>  lhs, DNA<T>  rhs) {return lhs.fitness > rhs.fitness; });
+			Population.sort([](DNA<T>*  lhs, DNA<T>*  rhs) {return lhs->fitness > rhs->fitness; });
 			//get random number equal to 25% of size of population
 			int randomN = Population.size() * 0.25f;
 			if (randomN == 0)
@@ -140,8 +147,8 @@ public:
 			//iterate to random iterator number place
 			std::advance(iter, randPlace);
 			//return DNA at iterator position
-			return *iter;
-
+			return (*iter);
+		
 			//this gives an error after some time
 			//for (auto iter = Population.begin(); iter != Population.end(); iter++)
 			//{
@@ -161,8 +168,8 @@ public:
 		}
 		else
 		{
-			DNA<T> childDNA = DNA<T>(dnaSize, getRandomGene, fitnessFunction);
-			childDNA.Genes = bestGenes;
+			DNA<T>* childDNA = new DNA<T>(dnaSize, getRandomGene, fitnessFunction);
+			childDNA->Genes = bestGenes;
 			return childDNA;
 		}
 
