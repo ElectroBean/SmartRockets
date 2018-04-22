@@ -21,7 +21,7 @@ bool Application2D::startup() {
 	std::function<float(int)> t = std::bind(&Application2D::fitness, this, std::placeholders::_1);
 
 	validChars = new std::string("abcdefghijklmnopqrstuvwxyz,.? ABCDEFGHIJKLMNOPQRSTUVWXYZ");
-	targetString = new std::string("pineapple");
+	targetString = new std::string("through the wire");
 
 	srand(time(NULL));
 
@@ -32,7 +32,7 @@ bool Application2D::startup() {
 	//then setting fitness/random gene functions
 	//mutation rate of 5%
 	////////////////////////////////////////////////////////////////
-	m_GA = new GeneticAlgorithm<char>(10, targetString->length(), f, t, 5.0f);
+	m_GA = new GeneticAlgorithm<char>(200, targetString->length(), f, t, 5.0f);
 
 	m_font = new aie::Font("./font/consolas.ttf", 32);
 
@@ -98,10 +98,23 @@ void Application2D::draw() {
 	m_2dRenderer->drawText(m_font, "Best Genes   :", 0, 720 - 64);
 	m_2dRenderer->drawText(m_font, s.c_str(), 250, 720 - 64);
 
+	//draw best genes generation number
+	m_2dRenderer->drawText(m_font, "Best Genes Generation: ", 0, 720 - 96);
+	std::string g = std::to_string(m_GA->bestGenesGeneration);;
+	m_2dRenderer->drawText(m_font, g.c_str(), 400, 720 - 96);
+
 
 	//draw whole population
+	float xPosition = 0;
+	float yPosition = 720 - 160 - 32;
+	float xPositionOffset = targetString->size() * 20;
 	for (int i = 0; i < m_GA->Population.size(); i++)
 	{
+		if ((i % 3) == 0)
+		{
+			yPosition -= 32;
+			xPosition = 0;
+		}
 		std::string c;
 		auto iter = m_GA->Population.begin();
 		std::advance(iter, i);
@@ -109,14 +122,15 @@ void Application2D::draw() {
 		{
 			c += *elIter;
 		}
-
-		m_2dRenderer->drawText(m_font, c.c_str(), 0, (720 - 128) - ((i + 1) * 32));
+	
+		m_2dRenderer->drawText(m_font, c.c_str(), xPosition, yPosition);
+		xPosition += xPositionOffset;
 	}
 
 	//generation number text
 	std::string genNumber = std::to_string(m_GA->generationNumber);
-	m_2dRenderer->drawText(m_font, genNumber.c_str(), 350, 720 - 128);
-	m_2dRenderer->drawText(m_font, "Current Generation: ", 0, 720 - 128);
+	m_2dRenderer->drawText(m_font, genNumber.c_str(), 350, 720 - 160);
+	m_2dRenderer->drawText(m_font, "Current Generation: ", 0, 720 - 160);
 
 	// done drawing sprites
 	m_2dRenderer->end();

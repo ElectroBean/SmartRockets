@@ -19,6 +19,7 @@ public:
 
 	std::list<T> bestGenes;
 	float bestFitness;
+	int bestGenesGeneration;
 
 
 	GeneticAlgorithm(int populationSize,
@@ -35,6 +36,7 @@ public:
 		Population = std::list<DNA<T>*>();
 		newPopulation = std::list<DNA<T>*>();
 
+		//give population random dna
 		for (int i = 0; i < populationSize; i++)
 		{
 			Population.push_back(new DNA<T>(dnaSize, getRandomGene, fitnessFunction));
@@ -43,18 +45,11 @@ public:
 
 	~GeneticAlgorithm()
 	{
+		//get rid of dem memory leaks
 		for (auto iter = Population.begin(); iter != Population.end(); iter++)
 		{
 			delete *iter;
 		}
-		//if (newPopulation.size() != 0)
-		//{
-		//	for (auto iter = newPopulation.begin(); iter != newPopulation.end(); iter++)
-		//	{
-		//		delete *iter;
-		//	}
-		//
-		//}
 	}
 
 	//create new generation of whatevers
@@ -105,56 +100,35 @@ public:
 	void CalculateFitness()
 	{
 		sumFitness = 0;
-		//DNA<T> best = Population[0];
-
-		//for (int i = 0; i < Population.size(); i++)
-		//{
-		//	sumFitness += Population[i]->CalculateFitness(i);
-		//
-		//	//if (Population[i].fitness > best.fitness)
-		//	//{
-		//	//	bestFitness = Population[i];
-		//	//}
-		//}
 
 		for (auto iter = Population.begin(); iter != Population.end(); iter++)
 		{
 			DNA<T> temp = **iter;
+			//std::list iterator to int
 			int index = std::distance(Population.begin(), iter);
+			//calculate fitness of member and add to sumFitness
 			sumFitness += (**iter).CalculateFitness(index);
 
+			//update best fitness if current fitness is higher than best
 			if ((**iter).fitness > bestFitness)
 			{
 				bestFitness = (**iter).fitness;
 				bestGenes = temp.Genes;
+				bestGenesGeneration = generationNumber;
 			}
-			//sumFitness += *iter.CalculateFitness(iter);
-		//delete temp;
 		}
 
-		//bestFitness = best.fitness;
-		//bestGenes = best.Genes;
 	}
 
 	DNA<T>* ChooseParent()
 	{
 		float randomNumber = (static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) * sumFitness;
-		//for (int i = 0; i < Population.size(); i++)
-		//{
-		//	if (randomNumber < Population[i].fitness)
-		//	{
-		//		return Population[i];
-		//	}
-		//
-		//	randomNumber -= Population[i]->fitness;
-		//}
-
 
 		float randChoice = rand() % 100 + 1;
 		//50% elitist 50% higher fitness has higher chance to be chosen as parent
 		if (randChoice <= 100)
 		{
-			////sort population by fitness
+			//sort population by fitness
 			Population.sort([](DNA<T>*  lhs, DNA<T>*  rhs) {return lhs->fitness > rhs->fitness; });
 			//get random number equal to 25% of size of population
 			int randomN = Population.size() * 0.25f;
@@ -169,22 +143,24 @@ public:
 			//return DNA at iterator position
 			return (*iter);
 
-			//this gives an error after some time
-			//for (auto iter = Population.begin(); iter != Population.end(); iter++)
-			//{
-			//	//set temp variable to current iterator
-			//	DNA<T> temp = *iter;
-			//	//if our random number with fitness is less than our temps DNAs fitness
-			//	if (randomNumber < temp.fitness)
-			//	{
-			//		//return our temp DNA
-			//		return temp;
-			//	}
-			//
-			//	//take temp fitness from our random number
-			//	randomNumber -= temp.fitness;
-			//	//}
-			//}
+			
+			/*  Gives an error if left to run for a while (attempt at roulette selection)
+			for (auto iter = Population.begin(); iter != Population.end(); iter++)
+			{
+				//set temp variable to current iterator
+				DNA<T>* temp = *iter;
+				//if our random number with fitness is less than our temps DNAs fitness
+				if (randomNumber < temp->fitness)
+				{
+					//return our temp DNA
+					return temp;
+				}
+
+				//take temp fitness from our random number
+				randomNumber -= temp->fitness;
+				//}
+			}
+			*/ 
 		}
 		//else
 		//{
@@ -192,12 +168,10 @@ public:
 		//	childDNA->Genes = bestGenes;
 		//	return childDNA;
 		//}
-
 	}
 
 private:
 	int dnaSize;
 	std::function<T()> getRandomGene;
 	std::function<float(int)>  fitnessFunction;
-
 };
