@@ -15,21 +15,21 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Application2D.cpp">
+    <ClCompile Include="SmartRocketsApp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Rockets.cpp">
+    <ClCompile Include="Rocket.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Application2D.h">
+    <ClInclude Include="SmartRocketsApp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Rockets.h">
+    <ClInclude Include="Rocket.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

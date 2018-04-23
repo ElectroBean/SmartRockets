@@ -1,9 +1,9 @@
-#include "Application2D.h"
+#include "SmartRocketsApp.h"
 
 int main() {
 	
 	// allocation
-	auto app = new Application2D();
+	auto app = new SmartRocketsApp();
 
 	// initialise and loop
 	app->run("AIE", 1280, 720, false);

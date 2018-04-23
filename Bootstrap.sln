@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2027
+VisualStudioVersion = 15.0.27130.2036
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Bootstrap", "bootstrap\Bootstrap.vcxproj", "{AF59BB0B-E059-4773-83DC-728A949647DA}"
 EndProject
@@ -15,9 +15,9 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Project3D", "Project3D\Proj
 		{AF59BB0B-E059-4773-83DC-728A949647DA} = {AF59BB0B-E059-4773-83DC-728A949647DA}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RocketGA", "RocketGA\RocketGA.vcxproj", "{985CA482-356A-4050-8E5F-09F04B4CDF7A}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GeneticAlgorithm", "GeneticAlgorithm\GeneticAlgorithm.vcxproj", "{405B8A3E-1A62-4B67-9011-3CD2EE1C4E21}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SmartRockets", "SmartRockets\SmartRockets.vcxproj", "{DEA49362-B428-4215-8D64-4EA0B4FF0858}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,14 +51,6 @@ Global
 		{EA21C4DF-E331-4FCF-8513-14A3F56B77F3}.Release|x64.Build.0 = Release|x64
 		{EA21C4DF-E331-4FCF-8513-14A3F56B77F3}.Release|x86.ActiveCfg = Release|Win32
 		{EA21C4DF-E331-4FCF-8513-14A3F56B77F3}.Release|x86.Build.0 = Release|Win32
-		{985CA482-356A-4050-8E5F-09F04B4CDF7A}.Debug|x64.ActiveCfg = Debug|x64
-		{985CA482-356A-4050-8E5F-09F04B4CDF7A}.Debug|x64.Build.0 = Debug|x64
-		{985CA482-356A-4050-8E5F-09F04B4CDF7A}.Debug|x86.ActiveCfg = Debug|Win32
-		{985CA482-356A-4050-8E5F-09F04B4CDF7A}.Debug|x86.Build.0 = Debug|Win32
-		{985CA482-356A-4050-8E5F-09F04B4CDF7A}.Release|x64.ActiveCfg = Release|x64
-		{985CA482-356A-4050-8E5F-09F04B4CDF7A}.Release|x64.Build.0 = Release|x64
-		{985CA482-356A-4050-8E5F-09F04B4CDF7A}.Release|x86.ActiveCfg = Release|Win32
-		{985CA482-356A-4050-8E5F-09F04B4CDF7A}.Release|x86.Build.0 = Release|Win32
 		{405B8A3E-1A62-4B67-9011-3CD2EE1C4E21}.Debug|x64.ActiveCfg = Debug|x64
 		{405B8A3E-1A62-4B67-9011-3CD2EE1C4E21}.Debug|x64.Build.0 = Debug|x64
 		{405B8A3E-1A62-4B67-9011-3CD2EE1C4E21}.Debug|x86.ActiveCfg = Debug|Win32
@@ -67,6 +59,14 @@ Global
 		{405B8A3E-1A62-4B67-9011-3CD2EE1C4E21}.Release|x64.Build.0 = Release|x64
 		{405B8A3E-1A62-4B67-9011-3CD2EE1C4E21}.Release|x86.ActiveCfg = Release|Win32
 		{405B8A3E-1A62-4B67-9011-3CD2EE1C4E21}.Release|x86.Build.0 = Release|Win32
+		{DEA49362-B428-4215-8D64-4EA0B4FF0858}.Debug|x64.ActiveCfg = Debug|x64
+		{DEA49362-B428-4215-8D64-4EA0B4FF0858}.Debug|x64.Build.0 = Debug|x64
+		{DEA49362-B428-4215-8D64-4EA0B4FF0858}.Debug|x86.ActiveCfg = Debug|Win32
+		{DEA49362-B428-4215-8D64-4EA0B4FF0858}.Debug|x86.Build.0 = Debug|Win32
+		{DEA49362-B428-4215-8D64-4EA0B4FF0858}.Release|x64.ActiveCfg = Release|x64
+		{DEA49362-B428-4215-8D64-4EA0B4FF0858}.Release|x64.Build.0 = Release|x64
+		{DEA49362-B428-4215-8D64-4EA0B4FF0858}.Release|x86.ActiveCfg = Release|Win32
+		{DEA49362-B428-4215-8D64-4EA0B4FF0858}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
