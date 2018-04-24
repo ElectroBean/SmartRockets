@@ -164,11 +164,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Obstacles.cpp" />
     <ClCompile Include="Rocket.cpp" />
     <ClCompile Include="SmartRocketsApp.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Obstacles.h" />
     <ClInclude Include="Rocket.h" />
     <ClInclude Include="SmartRocketsApp.h" />
   </ItemGroup>

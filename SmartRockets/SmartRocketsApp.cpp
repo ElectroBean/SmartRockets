@@ -24,15 +24,17 @@ bool SmartRocketsApp::startup() {
 	std::function<float(int)> t = std::bind(&SmartRocketsApp::GetFitness, this, std::placeholders::_1);
 
 	srand(time(NULL));
-	PopulationSize = 50;
+	PopulationSize = 100;
 
 	WindowX = Application::getWindowWidth();
 	WindowY = Application::getWindowHeight();
 	
 	m_EndGoal = glm::vec2(WindowX / 2, WindowY - 100);
 	m_obstacle1 = glm::vec2(WindowX / 2, WindowY / 2);
+	m_obstacles[0] = new Obstacles(glm::vec2(WindowX / 2, WindowY / 2), glm::vec2(500, 5));
+	m_obstacles[1] = new Obstacles(glm::vec2(WindowX / 2, WindowY - 120), glm::vec2(100, 5));
 
-	m_GA = new GeneticAlgorithm<glm::vec2>(50, 250, f, t, 8.0f);
+	m_GA = new GeneticAlgorithm<glm::vec2>(100, 250, f, t, 4.0f);
 	for (int i = 0; i < PopulationSize; i++)
 	{
 		auto iter = m_GA->Population.begin();
@@ -50,6 +52,14 @@ void SmartRocketsApp::shutdown() {
 	delete m_font;
 	delete m_2dRenderer;
 	delete m_GA;
+	for (int i = 0; i < PopulationSize; i++)
+	{
+		delete m_Population[i];
+	}
+	for (int i = 0; i < 2; i++)
+	{
+		delete m_obstacles[i];
+	}
 }
 
 void SmartRocketsApp::update(float deltaTime) {
@@ -72,10 +82,13 @@ void SmartRocketsApp::update(float deltaTime) {
 		m_GA->NewGeneration();
 		for (int i = 0; i < PopulationSize; i++)
 		{
+			delete m_Population[i];
+		}
+		for (int i = 0; i < PopulationSize; i++)
+		{
 			auto iter = m_GA->Population.begin();
 			std::advance(iter, i);
 			DNA<glm::vec2>* genes = (*iter);
-
 			m_Population[i] = new Rocket(genes);
 		}
 	}
@@ -101,8 +114,12 @@ void SmartRocketsApp::draw() {
 		m_2dRenderer->drawCircle(m_Population[i]->position.x, m_Population[i]->position.y, 5, 1.0f);
 	}
 
-	m_2dRenderer->drawBox(m_EndGoal.x, m_EndGoal.y, 5, 5);
-	m_2dRenderer->drawBox(m_obstacle1.x, m_obstacle1.y, 500, 5);
+	m_2dRenderer->drawBox(m_EndGoal.x, m_EndGoal.y, 20, 20);
+
+	for (int i = 0; i < 2; i++)
+	{
+		m_obstacles[i]->Draw(m_2dRenderer);
+	}
 
 	// output some text, uses the last used colour
 	m_2dRenderer->drawText(m_font, "Press ESC to quit", 0, 0);
@@ -120,20 +137,26 @@ glm::vec2 SmartRocketsApp::GetRandomVector2()
 
 float SmartRocketsApp::GetFitness(int index)
 {
-	
-	float d = glm::distance(m_Population[index]->position, m_EndGoal);
+	glm::vec2 asd = m_EndGoal;
+	m_Population[index]->positions.sort([asd](glm::vec2 lhs, glm::vec2 rhs) {return glm::distance(asd, rhs) < glm::distance(asd, lhs); });
+
+	float d = glm::distance(*(m_Population[index]->positions.begin()), m_EndGoal);
 	
 	//store positions constantly, base score off closest position to end
 
-	float fitness = -d;
-	d += m_Population[index]->duration * 5.0f;
+	float fitness = 1 / d;
+	d -= m_Population[index]->duration;
 	if (m_Population[index]->crashed)
 	{
-		fitness -= 5000;
+		fitness /= 10;
+	}
+	else
+	{
+		fitness *= 10;
 	}
 	if (m_Population[index]->completed)
 	{
-		fitness += 1000;
+		fitness *= 25;
 	}
 	return fitness;
 }
@@ -148,11 +171,23 @@ void SmartRocketsApp::CheckCollisions()
 		glm::vec2 min2 = m_obstacle1 - glm::vec2(500 / 2, 5);
 		glm::vec2 max2 = m_obstacle1 + glm::vec2(500 / 2, 5);
 
-		glm::vec2 endMin = m_EndGoal - glm::vec2(2.5f, 2.5f);
-		glm::vec2 endMax = m_EndGoal + glm::vec2(2.5f, 2.5f);
+		glm::vec2 endMin = m_EndGoal - glm::vec2(10.0f, 10.0f);
+		glm::vec2 endMax = m_EndGoal + glm::vec2(10.0f, 10.0f);
 
-		bool collision = (max1.x < min2.x || max2.x < min1.x || max1.y < min2.y || max2.y < min1.y);
+		//for (int i = 0; i < 2; i++)
+		//{
+		//	bool collision = (max1.x < m_obstacles[i]->min.x || m_obstacles[i]->max.x < min1.x || max1.y < m_obstacles[i]->min.y || m_obstacles[i]->max.y < min1.y);
+		//	if (!collision)
+		//		m_Population[i]->setCrashed();
+		//}
+
+
+		bool collision = (max1.x < m_obstacles[0]->min.x || m_obstacles[0]->max.x < min1.x || max1.y < m_obstacles[0]->min.y || m_obstacles[0]->max.y < min1.y);
 		if (!collision)
+			m_Population[i]->setCrashed();
+
+		bool collision2 = (max1.x < m_obstacles[1]->min.x || m_obstacles[1]->max.x < min1.x || max1.y < m_obstacles[1]->min.y || m_obstacles[1]->max.y < min1.y);
+		if (!collision2)
 			m_Population[i]->setCrashed();
 
 		if (m_Population[i]->position.x > WindowX || m_Population[i]->position.x < 0

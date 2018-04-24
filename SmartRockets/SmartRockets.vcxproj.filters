@@ -24,12 +24,18 @@
     <ClCompile Include="Rocket.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Obstacles.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SmartRocketsApp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Rocket.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Obstacles.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

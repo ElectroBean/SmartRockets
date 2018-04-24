@@ -125,11 +125,13 @@ public:
 		float randomNumber = (static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) * sumFitness;
 
 		float randChoice = rand() % 100 + 1;
+		//sort population by fitness
+		Population.sort([](DNA<T>*  lhs, DNA<T>*  rhs) {return lhs->fitness > rhs->fitness; });
 		//50% elitist 50% higher fitness has higher chance to be chosen as parent
-		if (randChoice <= 100)
+		if (randChoice <= 50)
 		{
-			//sort population by fitness
-			Population.sort([](DNA<T>*  lhs, DNA<T>*  rhs) {return lhs->fitness > rhs->fitness; });
+
+			/////////////////////////////////////////////////////////////////////////////////////////////
 			//get random number equal to 25% of size of population
 			int randomN = Population.size() * 0.25f;
 			if (randomN == 0)
@@ -142,6 +144,19 @@ public:
 			std::advance(iter, randPlace);
 			//return DNA at iterator position
 			return (*iter);
+			/////////////////////////////////////////////////////////////////////////////////////////////
+
+			/////////////////////////////////////////////////////////////////////////////////////////////
+
+			//random numbers from 0 to 1
+			//float w = ((double)rand() / (RAND_MAX));
+			//float x = ((double)rand() / (RAND_MAX));
+			//int index = std::floor(std::abs(w - x) * (1 + (Population.size() - 1) - 0) + 0);
+			//auto iter = Population.begin();
+			//std::advance(iter, index); 
+			//return *iter;
+
+			/////////////////////////////////////////////////////////////////////////////////////////////
 
 			
 			/*  Gives an error if left to run for a while (attempt at roulette selection)
@@ -162,12 +177,14 @@ public:
 			}
 			*/ 
 		}
-		//else
-		//{
-		//	DNA<T>* childDNA = new DNA<T>(dnaSize, getRandomGene, fitnessFunction);
-		//	childDNA->Genes = bestGenes;
-		//	return childDNA;
-		//}
+		else
+		{
+			//DNA<T>* childDNA = new DNA<T>(dnaSize, getRandomGene, fitnessFunction);
+			//childDNA->Genes = bestGenes;
+			//return childDNA;
+			auto iter = Population.begin();
+			return *iter;
+		}
 	}
 
 private:

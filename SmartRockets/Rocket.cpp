@@ -13,6 +13,7 @@ Rocket::Rocket(DNA<glm::vec2>* dna)
 	this->fitness = 0.0f;
 	this->index = 0;
 	this->reachedEnd = false;
+	this->duration = 0.0f;
 }
 
 
@@ -41,6 +42,8 @@ void Rocket::Update(float deltaTime)
 		velocity += acceleration;
 		position += velocity;
 		acceleration *= 0;
+		glm::clamp(velocity, glm::vec2(-4, -4), glm::vec2(4, 4));
+
 		duration += 1 * deltaTime;
 	}
 
@@ -55,3 +58,4 @@ void Rocket::applyForce(glm::vec2 force)
 {
 	this->acceleration += force;
 }
+

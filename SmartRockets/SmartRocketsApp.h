@@ -6,7 +6,7 @@
 #include <glm\glm.hpp>
 #include "Rocket.h"
 #include <glm\gtc\random.hpp>
-
+#include "Obstacles.h"
 
 class SmartRocketsApp : public aie::Application {
 public:
@@ -34,6 +34,9 @@ protected:
 	Rocket*				m_Population[100];
 	glm::vec2			m_EndGoal;
 	glm::vec2			m_obstacle1;
+
+	Obstacles*			m_obstacles[2];
+
 	float WindowX;
 	float WindowY;
 };
