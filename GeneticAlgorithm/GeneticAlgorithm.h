@@ -19,7 +19,7 @@ public:
 
 	std::list<T> bestGenes;
 	float bestFitness;
-	int bestGenesGeneration;
+	int bestGenesGeneration = 1;
 
 
 	GeneticAlgorithm(int populationSize,

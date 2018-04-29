@@ -35,8 +35,11 @@ protected:
 	glm::vec2			m_EndGoal;
 	glm::vec2			m_obstacle1;
 
-	Obstacles*			m_obstacles[2];
+	Obstacles*			m_obstacles[4];
 
 	float WindowX;
 	float WindowY;
+	std::string bestGen;
+	int totalMembers;
+	int membersCompleted;
 };
