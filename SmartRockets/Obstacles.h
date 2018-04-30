@@ -1,6 +1,5 @@
 #pragma once
 #include <glm\glm.hpp>
-#include <Application.h>
 #include <Renderer2D.h>
 
 class Obstacles

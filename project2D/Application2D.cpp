@@ -20,6 +20,8 @@ bool Application2D::startup() {
 	std::function<char()> f = std::bind(&Application2D::getRandomGene, this);
 	std::function<float(int)> t = std::bind(&Application2D::fitness, this, std::placeholders::_1);
 
+	
+
 	validChars = new std::string("abcdefghijklmnopqrstuvwxyz,.? ABCDEFGHIJKLMNOPQRSTUVWXYZ-");
 	targetString = new std::string("If Jesus could walk on water, could he swim on land?");
 
